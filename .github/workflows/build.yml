@@ -1,0 +1,36 @@
+name: Build
+
+on: push
+
+jobs:
+  build-macos:
+    name: Build for macOS
+    runs-on: macos-11
+    steps:
+    - name: Install build tools
+      run: brew install automake libtool pkg-config
+    - name: Checkout adaptagrams
+      uses: actions/checkout@v3
+      with:
+        repository: mjwybrow/adaptagrams
+        ref: fcac991f9f7d959e8326ae0567ce122839fbd4be
+        path: adaptagrams
+    - name: Configure and compile libavoid
+      working-directory: ${{ github.workspace }}/adaptagrams/cola
+      run: |
+        mkdir -p m4
+        autoreconf --install
+        ./configure
+        cd libavoid; make
+    - name: Checkout libavoid-server
+      uses: actions/checkout@v3
+      with:
+        path: libavoid-server
+    - name: Compile libavoid-server
+      working-directory: ${{ github.workspace }}/libavoid-server
+      run: make macos LIBAVOID=$GITHUB_WORKSPACE/adaptagrams/cola
+    - name: Upload executable binary
+      uses: actions/upload-artifact@v3
+      with:
+        name: libavoid-server-macos
+        path: ${{ github.workspace }}/libavoid-server/bin/libavoid-server-macos

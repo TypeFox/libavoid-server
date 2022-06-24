@@ -1,11 +1,12 @@
-LIBAVOID = /Users/spoenemann/OpenSource/elk/adaptagrams/cola
+ifndef LIBAVOID
+$(error LIBAVOID is not set; please set it to the path of the adaptagrams/cola directory)
+endif
 
 BIN = libavoid-server
 SRC_DIR = src
 BIN_DIR = bin
 OBJ_DIR = $(BIN_DIR)
 
-COPTS = 
 INCS = -I$(LIBAVOID) -Iinclude
 
 SRCS = $(wildcard $(SRC_DIR)/*.cpp)
@@ -31,15 +32,17 @@ $(BIN_DIR)/%: $(OBJS)
 
 # Run this target on a MacOS machine
 macos: CC = g++
-macos: LOPTS = -mmacosx-version-min=12.4
+macos: COPTS = -mmacosx-version-min=11.6
+macos: LOPTS = -mmacosx-version-min=11.6
 macos: LIBS =
-macos: $(BIN_DIR)/$$@/$(BIN) $?
+macos: $(BIN_DIR)/$(BIN)-$$@ $?
 
 # Run this target on a Linux machine
 linux: CC = g++
+linux: COPTS =
 linux: LOPTS =
 linux: LIBS = -lpthread
-linux: $(BIN_DIR)/$$@/$(BIN) $?
+linux: $(BIN_DIR)/$(BIN)-$$@ $?
 
 clean: 
 	rm -rf $(BIN_DIR)
