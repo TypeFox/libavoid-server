@@ -1,21 +1,16 @@
 /**
  * @file    LibavoidRouting.h
  * @author  uru
- * @version 0.1.0
  *
  * @section LICENSE
  *
- * KIELER - Kiel Integrated Environment for Layout Eclipse RichClient
+ * Copyright (c) 2013, 2022 Kiel University and others.
+ * 
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
  *
- * http://www.informatik.uni-kiel.de/rtsys/kieler/
- *
- * Copyright 2013 by
- * + Kiel University
- *   + Department of Computer Science
- *     + Real-Time and Embedded Systems Group
- *
- * This code is provided under the terms of the Eclipse Public License (EPL).
- * See the file epl-v10.html for the license text.
+ * SPDX-License-Identifier: EPL-2.0
  *
  * @section DESCRIPTION
  *
