@@ -14,7 +14,7 @@ OBJS = $(addprefix $(OBJ_DIR)/, $(patsubst %.cpp, %.o, $(notdir $(SRCS))))
 
 
 default:
-	@echo "Use one of the targets: macos, linux"
+	@echo "Use one of the targets: macos, linux, win"
 
 
 # Compiling all libavoid-server sources
@@ -43,6 +43,13 @@ linux: COPTS =
 linux: LOPTS =
 linux: LIBS = -lpthread
 linux: $(BIN_DIR)/$(BIN)-$$@ $?
+
+# Run this target on a Windows machine
+win: CC = g++
+win: COPTS =
+win: LOPTS =
+win: LIBS =
+win: $(BIN_DIR)/$(BIN)-$$@ $?
 
 clean: 
 	rm -rf $(BIN_DIR)
