@@ -9,8 +9,8 @@ OBJ_DIR = $(BIN_DIR)
 
 INCS = -I$(LIBAVOID) -Iinclude
 
-SRCS = $(wildcard $(SRC_DIR)/*.cpp)
-OBJS = $(addprefix $(OBJ_DIR)/, $(patsubst %.cpp, %.o, $(notdir $(SRCS))))
+SOURCES = $(wildcard $(SRC_DIR)/*.cpp)
+OBJS = $(addprefix $(OBJ_DIR)/, $(patsubst %.cpp, %.o, $(notdir $(SOURCES))))
 
 
 default:
@@ -27,28 +27,25 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 # Linking all the stuff
 $(BIN_DIR)/%: $(OBJS)
 	mkdir -p $(@D)
-	$(CC) $(LOPTS) $(LIBS) -o $@ $(OBJS) $(LIBAVOID)/libavoid/.libs/libavoid.a
+	$(CC) $(LOPTS) -o $@ $(OBJS) $(LIBAVOID)/libavoid/.libs/libavoid.a
 
 
 # Run this target on a MacOS machine
 macos: CC = g++
-macos: COPTS = -mmacosx-version-min=11.6
+macos: COPTS = -std=gnu++11 -O2 -mmacosx-version-min=11.6
 macos: LOPTS = -mmacosx-version-min=11.6
-macos: LIBS =
 macos: $(BIN_DIR)/$(BIN)-$$@ $?
 
 # Run this target on a Linux machine
 linux: CC = g++
-linux: COPTS =
-linux: LOPTS =
-linux: LIBS = -lpthread
+linux: COPTS = -std=gnu++11 -O2
+linux: LOPTS = -lpthread
 linux: $(BIN_DIR)/$(BIN)-$$@ $?
 
 # Run this target on a Windows machine
 win: CC = g++
-win: COPTS =
+win: COPTS = -std=gnu++11 -O2
 win: LOPTS =
-win: LIBS =
 win: $(BIN_DIR)/$(BIN)-$$@ $?
 
 clean: 
