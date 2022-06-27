@@ -39,13 +39,13 @@ macos: $(BIN_DIR)/$(BIN)-$$@ $?
 # Run this target on a Linux machine
 linux: CC = g++
 linux: COPTS = -std=gnu++11 -O2
-linux: LOPTS = -lpthread
+linux: LOPTS = -lpthread -s
 linux: $(BIN_DIR)/$(BIN)-$$@ $?
 
 # Run this target on a Windows machine
 win: CC = g++
 win: COPTS = -std=gnu++11 -O2
-win: LOPTS =
+win: LOPTS = -s
 win: $(BIN_DIR)/$(BIN)-$$@ $?
 
 clean: 
