@@ -26,7 +26,7 @@ jobs:
       run: |
         mkdir -p m4
         autoreconf --install
-        ./configure
+        ./configure --disable-shared
         cd libavoid; make
     - name: Checkout libavoid-server
       uses: actions/checkout@v3

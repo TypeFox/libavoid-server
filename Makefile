@@ -45,7 +45,7 @@ linux: $(BIN_DIR)/$(BIN)-$$@ $?
 # Run this target on a Windows machine
 win: CC = g++
 win: COPTS = -std=gnu++11 -O2
-win: LOPTS = -s
+win: LOPTS = -static -static-libgcc -static-libstdc++ -s
 win: $(BIN_DIR)/$(BIN)-$$@ $?
 
 clean: 
