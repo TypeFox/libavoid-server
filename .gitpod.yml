@@ -1,0 +1,15 @@
+tasks:
+  - init: |
+      cd /workspace
+      git clone https://github.com/mjwybrow/adaptagrams
+      cd adaptagrams/cola
+      mkdir -p m4
+      autoreconf --install
+      ./configure
+      cd libavoid; make
+      cd /workspace/libavoid-server
+      make linux LIBAVOID=/workspace/adaptagrams/cola
+
+vscode:
+  extensions:
+    - ms-vscode.makefile-tools
