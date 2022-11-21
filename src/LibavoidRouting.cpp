@@ -36,7 +36,9 @@ void tokenize(std::string text, std::vector<string>& tokens) {
 }
 
 void setPenalty(string optionId, string token, Avoid::Router* router) {
-
+    if (optionId.rfind("de.cau.cs.kieler.kiml.libavoid.", 0) == 0) {
+        optionId = optionId.substr(31, std::string::npos);
+    }
     float value = toDouble(token);
 
     if (optionId == SEGMENT_PENALTY) {
@@ -55,13 +57,17 @@ void setPenalty(string optionId, string token, Avoid::Router* router) {
         router->setRoutingPenalty(Avoid::shapeBufferDistance, value);
     } else if (optionId == IDEAL_NUDGING_DISTANCE) {
         router->setRoutingPenalty(Avoid::idealNudgingDistance, value);
+    } else if (optionId == REVERSE_DIRECTION_PENALTY) {
+        router->setRoutingPenalty(Avoid::reverseDirectionPenalty, value);
     } else {
         cerr << "ERROR: unknown penalty " << optionId << "." << endl;
     }
 }
 
 void setOption(string optionId, string token, Avoid::Router* router) {
-
+    if (optionId.rfind("de.cau.cs.kieler.kiml.libavoid.", 0) == 0) {
+        optionId = optionId.substr(31, std::string::npos);
+    }
     bool value = toBool(token);
 
     if (optionId == NUDGE_ORTHOGONAL_SEGMENTS) {
@@ -75,10 +81,11 @@ void setOption(string optionId, string token, Avoid::Router* router) {
     } else if (optionId == NUDGE_PREPROCESSING) {
         router->setRoutingOption(Avoid::performUnifyingNudgingPreprocessingStep, value);
     } else if (optionId == IMPROVE_HYPEREDGES_ADD_DELETE) {
-        router->setRoutingOption(Avoid::improveHyperedgeRoutesMovingAddingAndDeletingJunctions,
-                value);
+        router->setRoutingOption(Avoid::improveHyperedgeRoutesMovingAddingAndDeletingJunctions, value);
+    } else if (optionId == NUDGE_SHARED_PATHS_COMMON_ENDPOINT) {
+        router->setRoutingOption(Avoid::nudgeSharedPathsWithCommonEndPoint, value);
     } else {
-        cerr << "ERROR: unknown option " << optionId << "." << endl;
+        cerr << "ERROR: unknown routing option " << optionId << "." << endl;
     }
 }
 

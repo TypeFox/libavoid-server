@@ -56,8 +56,6 @@ int main(void) {
         chunkStream.nextChunk();
     }
 
-    cout << "Terminating ..." << endl;
-
     return 0;
 }
 
@@ -71,35 +69,59 @@ void HandleRequest(chunk_istream& stream, ostream& out) {
     Avoid::Router *router = 0;
 
     // options
-    Avoid::ConnType connectorType = Avoid::ConnType_PolyLine;
+    Avoid::ConnType connectorType = Avoid::ConnType_Orthogonal;
     std::string direction = DIRECTION_UNDEFINED;
 
 	// should we print debug information?
 	bool debug = false;
+    // has the graph declaration started?
+    bool graphDecl = false;
 
     // read graph from stdin
     for (std::string line; std::getline(std::cin, line);) {
 
         // split the line into its parts
-        vector < string > tokens;
+        vector<string> tokens;
         tokenize(line, tokens);
 
-        if (tokens[0] == "PENALTY") {
+        if (tokens.size() >= 3 && tokens[0] == "PENALTY") {
+            if (router == NULL) {
+                router = new Avoid::Router(Avoid::OrthogonalRouting);
+            }
+            if (graphDecl) {
+                cerr << "WARNING: penalties should not be specified after GRAPH declaration" << endl;
+            }
 
             /* Penalties */
             setPenalty(tokens[1], tokens[2], router);
 
-        } else if (tokens[0] == "ROUTINGOPTION") {
+        } else if (tokens.size() >= 3 && tokens[0] == "ROUTINGOPTION") {
+            if (router == NULL) {
+                router = new Avoid::Router(Avoid::OrthogonalRouting);
+            }
+            if (graphDecl) {
+                cerr << "WARNING: routing options should not be specified after GRAPH declaration" << endl;
+            }
 
             /* Routing options */
             setOption(tokens[1], tokens[2], router);
 
-        } else if (tokens[0] == "OPTION") {
+        } else if (tokens.size() >= 3 && tokens[0] == "OPTION") {
+            if (graphDecl) {
+                cerr << "WARNING: options should not be specified after GRAPH declaration" << endl;
+            }
+            std::string optionId = tokens[1];
+            if (optionId.rfind("org.eclipse.elk.", 0) == 0) {
+                optionId = optionId.substr(16, std::string::npos);
+            } else if (optionId.rfind("de.cau.cs.kieler.", 0) == 0) {
+                optionId = optionId.substr(17, std::string::npos);
+            }
 
             /* General options */
-            if (tokens[1] == EDGE_ROUTING || tokens[1] == EDGE_ROUTING_ELK) {
+            if (optionId == EDGE_ROUTING) {
 				if (router) {
 					// possibly delete an old router
+                    cerr << "WARNING: discarding previous options due to " << EDGE_ROUTING << " declaration." << endl;
 					delete router;
 				}
                 // edge routing
@@ -111,12 +133,21 @@ void HandleRequest(chunk_istream& stream, ostream& out) {
 					router = new Avoid::Router(Avoid::OrthogonalRouting);
                     connectorType = Avoid::ConnType_Orthogonal;
                 }
-            } else if (tokens[1] == DIRECTION || tokens[1] == DIRECTION_ELK) {
+            } else if (optionId == DIRECTION) {
                 // layout direction
                 direction = tokens[2];
+            } else {
+                cerr << "ERROR: unknown option " << tokens[1] << "." << endl;
             }
 
-        } else if (tokens.at(0) == "NODE") {
+        } else if (tokens[0] == "NODE") {
+            if (router == NULL) {
+                router = new Avoid::Router(Avoid::OrthogonalRouting);
+            }
+            if (!graphDecl) {
+                cerr << "ERROR: missing declaration of GRAPH" << endl;
+                graphDecl = true;
+            }
             // format:
             // id topleft bottomright portLessIncomingEdges portLessOutgoingEdges
             if (tokens.size() != 8) {
@@ -126,6 +157,13 @@ void HandleRequest(chunk_istream& stream, ostream& out) {
             addNode(tokens, shapes, router, direction);
 
         } else if (tokens[0] == "PORT") {
+            if (router == NULL) {
+                router = new Avoid::Router(Avoid::OrthogonalRouting);
+            }
+            if (!graphDecl) {
+                cerr << "ERROR: missing declaration of GRAPH" << endl;
+                graphDecl = true;
+            }
             // format: portId nodeId portSide centerX centerYs
             if (tokens.size() != 6) {
                 cerr << "ERROR: invalid port format" << endl;
@@ -135,6 +173,13 @@ void HandleRequest(chunk_istream& stream, ostream& out) {
 
         } else if (tokens[0] == "EDGE" || tokens[0] == "PEDGEP" || tokens[0] == "PEDGE"
                 || tokens[0] == "EDGEP") {
+            if (router == NULL) {
+                router = new Avoid::Router(Avoid::OrthogonalRouting);
+            }
+            if (!graphDecl) {
+                cerr << "ERROR: missing declaration of GRAPH" << endl;
+                graphDecl = true;
+            }
             // format: edgeId srcId tgtId srcPort tgtPort
             if (tokens.size() != 6) {
                 cerr << "ERROR: invalid edge format" << endl;
@@ -145,13 +190,24 @@ void HandleRequest(chunk_istream& stream, ostream& out) {
 		} else if (tokens[0] == "DEBUG") {
 			debug = true;
 
-        } else if (tokens.at(0) == "GRAPHEND") {
+        } else if (tokens[0] == "GRAPH") {
+            if (graphDecl) {
+                cerr << "ERROR: duplicate declaration of GRAPH" << endl;
+            }
+            graphDecl = true;
+        } else if (tokens[0] == "GRAPHEND") {
+            if (!graphDecl) {
+                cerr << "ERROR: missing declaration of GRAPH" << endl;
+            }
             break;
-        } else {
+        } else if (tokens[0] == "#") {
             // ignore it
+        } else {
+            cerr << "ERROR: invalid command " << tokens[0] << "." << endl;
         }
-
-        //std::cout << line << std::endl;
+    }
+    if (router == NULL) {
+        return;
     }
 
 #ifdef DEBUG_EXEC_TIME

@@ -18,14 +18,16 @@ OPTION {id} {value}
 ```
 where `{id}` is the identifier of the layout option and `{value}` is a value for that option. The following layout options are supported:
 
- * [`org.eclipse.elk.edgeRouting`](https://www.eclipse.org/elk/reference/options/org-eclipse-elk-edgeRouting.html)
- * [`org.eclipse.elk.direction`](https://www.eclipse.org/elk/reference/options/org-eclipse-elk-direction.html)
+ * [`edgeRouting`](https://www.eclipse.org/elk/reference/options/org-eclipse-elk-edgeRouting.html)
+ * [`direction`](https://www.eclipse.org/elk/reference/options/org-eclipse-elk-direction.html)
+
+_Note:_ The `edgeRouting` option must be applied before all other configuration parameters.
 
 ### Routing Options
 
 A [routing option](https://www.adaptagrams.org/documentation/classAvoid_1_1Router.html#a09f057f6d101f010588c9022893c9ac1) is applied using a line with the format
 ```
-ROUTINGOPTION de.cau.cs.kieler.kiml.libavoid.{id} {value}
+ROUTINGOPTION {id} {value}
 ```
 where `{id}` is the identifier of the routing option and `{value}` is a Boolean value to assign. The following routing option ids are available:
 
@@ -42,7 +44,7 @@ Their meaning is documented in the [libavoid documentation](https://www.adaptagr
 
 A [routing penalty](https://www.adaptagrams.org/documentation/classAvoid_1_1Router.html#acbda0590ff3234faad409e2f39e1c9ec) is applied using a line with the format
 ```
-PENALTY de.cau.cs.kieler.kiml.libavoid.{id} {value}
+PENALTY {id} {value}
 ```
 where `{id}` is the identifier of the routing penalty and `{value}` is a numeric value to assign. The following penalty ids are available:
 
@@ -142,21 +144,23 @@ with the following placeholders:
 
 Input:
 ```
-OPTION org.eclipse.elk.edgeRouting ORTHOGONAL
-PENALTY de.cau.cs.kieler.kiml.libavoid.segmentPenalty 10.0
-PENALTY de.cau.cs.kieler.kiml.libavoid.anglePenalty 0.0
-PENALTY de.cau.cs.kieler.kiml.libavoid.crossingPenalty 0.0
-PENALTY de.cau.cs.kieler.kiml.libavoid.clusterCrossingPenalty 4000.0
-PENALTY de.cau.cs.kieler.kiml.libavoid.fixedSharedPathPenalty 0.0
-PENALTY de.cau.cs.kieler.kiml.libavoid.portDirectionPenalty 100.0
-PENALTY de.cau.cs.kieler.kiml.libavoid.shapeBufferDistance 4.0
-PENALTY de.cau.cs.kieler.kiml.libavoid.idealNudgingDistance 0.0
-ROUTINGOPTION de.cau.cs.kieler.kiml.libavoid.nudgeOrthogonalSegmentsConnectedToShapes false
-ROUTINGOPTION de.cau.cs.kieler.kiml.libavoid.improveHyperedgeRoutesMovingJunctions true
-ROUTINGOPTION de.cau.cs.kieler.kiml.libavoid.penaliseOrthogonalSharedPathsAtConnEnds false
-ROUTINGOPTION de.cau.cs.kieler.kiml.libavoid.nudgeOrthogonalTouchingColinearSegments false
-ROUTINGOPTION de.cau.cs.kieler.kiml.libavoid.performUnifyingNudgingPreprocessingStep true
-ROUTINGOPTION de.cau.cs.kieler.kiml.libavoid.improveHyperedgeRoutesMovingAddingAndDeletingJunctions true
+OPTION edgeRouting ORTHOGONAL
+PENALTY segmentPenalty 10.0
+PENALTY anglePenalty 0.0
+PENALTY crossingPenalty 0.0
+PENALTY clusterCrossingPenalty 4000.0
+PENALTY fixedSharedPathPenalty 0.0
+PENALTY portDirectionPenalty 100.0
+PENALTY shapeBufferDistance 4.0
+PENALTY idealNudgingDistance 0.0
+PENALTY REVERSE_DIRECTION_PENALTY 0.0
+ROUTINGOPTION nudgeOrthogonalSegmentsConnectedToShapes false
+ROUTINGOPTION improveHyperedgeRoutesMovingJunctions true
+ROUTINGOPTION penaliseOrthogonalSharedPathsAtConnEnds false
+ROUTINGOPTION nudgeOrthogonalTouchingColinearSegments false
+ROUTINGOPTION performUnifyingNudgingPreprocessingStep true
+ROUTINGOPTION improveHyperedgeRoutesMovingAddingAndDeletingJunctions true
+ROUTINGOPTION nudgeSharedPathsWithCommonEndPoint true
 GRAPH
 NODE 1 0.0 0.0 0.0 0.0 0 0
 NODE 2 0.0 0.0 0.0 0.0 0 0

@@ -35,13 +35,11 @@
 /*
  * Edge Routing
  */
-#define EDGE_ROUTING                "de.cau.cs.kieler.edgeRouting"
-#define EDGE_ROUTING_ELK            "org.eclipse.elk.edgeRouting"
+#define EDGE_ROUTING                "edgeRouting"
 #define EDGE_ROUTING_POLYLINE       "POLYLINE"
 #define EDGE_ROUTING_ORTHOGONAL     "ORTHOGONAL"
 
-#define DIRECTION                   "de.cau.cs.kieler.direction"
-#define DIRECTION_ELK				"org.eclipse.elk.direction"
+#define DIRECTION                   "direction"
 #define DIRECTION_UNDEFINED         "UNDEFINED"
 #define DIRECTION_UP                "UP"
 #define DIRECTION_RIGHT             "RIGHT"
@@ -51,24 +49,26 @@
 /*
  * Routing Penalties
  */
-#define SEGMENT_PENALTY 			"de.cau.cs.kieler.kiml.libavoid.segmentPenalty"
-#define ANGLE_PENALTY 				"de.cau.cs.kieler.kiml.libavoid.anglePenalty"
-#define CROSSING_PENALTY 			"de.cau.cs.kieler.kiml.libavoid.crossingPenalty"
-#define CLUSTER_CROSSING_PENALTY 	"de.cau.cs.kieler.kiml.libavoid.clusterCrossingPenalty"
-#define FIXED_SHARED_PATH_PENALTY 	"de.cau.cs.kieler.kiml.libavoid.fixedSharedPathPenalty"
-#define PORT_DIRECTION_PENALTY		"de.cau.cs.kieler.kiml.libavoid.portDirectionPenalty"
-#define SHAPE_BUFFER_DISTANCE 		"de.cau.cs.kieler.kiml.libavoid.shapeBufferDistance"
-#define IDEAL_NUDGING_DISTANCE 		"de.cau.cs.kieler.kiml.libavoid.idealNudgingDistance"
+#define SEGMENT_PENALTY 			"segmentPenalty"
+#define ANGLE_PENALTY 				"anglePenalty"
+#define CROSSING_PENALTY 			"crossingPenalty"
+#define CLUSTER_CROSSING_PENALTY 	"clusterCrossingPenalty"
+#define FIXED_SHARED_PATH_PENALTY 	"fixedSharedPathPenalty"
+#define PORT_DIRECTION_PENALTY		"portDirectionPenalty"
+#define SHAPE_BUFFER_DISTANCE 		"shapeBufferDistance"
+#define IDEAL_NUDGING_DISTANCE 		"idealNudgingDistance"
+#define REVERSE_DIRECTION_PENALTY	"reverseDirectionPenalty"
 
 /*
  * Routing Options
  */
-#define NUDGE_ORTHOGONAL_SEGMENTS			"de.cau.cs.kieler.kiml.libavoid.nudgeOrthogonalSegmentsConnectedToShapes"
-#define IMPROVE_HYPEREDGES					"de.cau.cs.kieler.kiml.libavoid.improveHyperedgeRoutesMovingJunctions"
-#define PENALISE_ORTH_SHATE_PATHS			"de.cau.cs.kieler.kiml.libavoid.penaliseOrthogonalSharedPathsAtConnEnds"
-#define NUDGE_ORTHOGONAL_COLINEAR_SEGMENTS	"de.cau.cs.kieler.kiml.libavoid.nudgeOrthogonalTouchingColinearSegments"
-#define NUDGE_PREPROCESSING					"de.cau.cs.kieler.kiml.libavoid.performUnifyingNudgingPreprocessingStep"
-#define IMPROVE_HYPEREDGES_ADD_DELETE       "de.cau.cs.kieler.kiml.libavoid.improveHyperedgeRoutesMovingAddingAndDeletingJunctions"
+#define NUDGE_ORTHOGONAL_SEGMENTS			"nudgeOrthogonalSegmentsConnectedToShapes"
+#define IMPROVE_HYPEREDGES					"improveHyperedgeRoutesMovingJunctions"
+#define PENALISE_ORTH_SHATE_PATHS			"penaliseOrthogonalSharedPathsAtConnEnds"
+#define NUDGE_ORTHOGONAL_COLINEAR_SEGMENTS	"nudgeOrthogonalTouchingColinearSegments"
+#define NUDGE_PREPROCESSING					"performUnifyingNudgingPreprocessingStep"
+#define IMPROVE_HYPEREDGES_ADD_DELETE       "improveHyperedgeRoutesMovingAddingAndDeletingJunctions"
+#define NUDGE_SHARED_PATHS_COMMON_ENDPOINT  "nudgeSharedPathsWithCommonEndPoint"
 
 /*
  * Port Sides 
