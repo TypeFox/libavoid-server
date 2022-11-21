@@ -153,7 +153,7 @@ PENALTY fixedSharedPathPenalty 0.0
 PENALTY portDirectionPenalty 100.0
 PENALTY shapeBufferDistance 4.0
 PENALTY idealNudgingDistance 0.0
-PENALTY REVERSE_DIRECTION_PENALTY 0.0
+PENALTY reverseDirectionPenalty 0.0
 ROUTINGOPTION nudgeOrthogonalSegmentsConnectedToShapes false
 ROUTINGOPTION improveHyperedgeRoutesMovingJunctions true
 ROUTINGOPTION penaliseOrthogonalSharedPathsAtConnEnds false
