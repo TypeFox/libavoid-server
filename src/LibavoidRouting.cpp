@@ -24,6 +24,8 @@
 #include <algorithm>
 #include <iterator>
 #include <vector>
+#include <utility>
+#include <unordered_map>
 
 #include "libavoid/libavoid.h"
 
@@ -198,6 +200,21 @@ void addNode(vector<string> &tokens, vector<Avoid::ShapeRef*> &shapes, Avoid::Ro
     }
 }
 
+void addCluster(vector<string> &tokens, Avoid::Router* router) {
+    int id = toInt(tokens.at(1));
+    double topLeftX = toDouble(tokens.at(2));
+    double topLeftY = toDouble(tokens.at(3));
+    double bottomRightX = toDouble(tokens.at(4));
+    double bottomRightY = toDouble(tokens.at(5));
+
+    Avoid::Polygon clusterPoly(4);
+    clusterPoly.ps[0] = Avoid::Point(bottomRightX, bottomRightY);  // bottom right
+    clusterPoly.ps[1] = Avoid::Point(bottomRightX, topLeftY);      // top right
+    clusterPoly.ps[2] = Avoid::Point(topLeftX, topLeftY);          // top left
+    clusterPoly.ps[3] = Avoid::Point(topLeftX, bottomRightY);      // bottom left
+    new Avoid::ClusterRef(router, clusterPoly, id);
+}
+
 void addPort(vector<string> &tokens, vector<Avoid::ShapeConnectionPin*> &pins,
         vector<Avoid::ShapeRef*> &shapes, Avoid::Router* router) {
     // format: portId nodeId portSide centerX centerYs
@@ -287,6 +304,33 @@ void addEdge(vector<string> &tokens, Avoid::ConnType connectorType, vector<Avoid
     connRef->setRoutingType(connectorType);
 
     cons.push_back(connRef);
+}
+
+// has to be called after Router::processTransaction(), otherwise the ConnEnds for a connection are not set
+void createHyperedges(vector<Avoid::ConnRef*> &cons, Avoid::Router* router) {
+    std::unordered_map<unsigned int, std::vector<Avoid::ConnRef*>> hyperedges;
+    Avoid::HyperedgeRerouter* hyperedgeRerouter = router->hyperedgeRerouter();
+    for (auto* conn : cons) {
+        unsigned int srcId = conn->endpointConnEnds().first.pinClassId();
+        if (srcId == PIN_OUTGOING) {
+            // no port
+            continue;
+        } else if (hyperedges.find(srcId) != hyperedges.end()) {
+            hyperedges[srcId].push_back(conn);
+        } else {
+            hyperedges[srcId] = std::vector<Avoid::ConnRef*>{conn};
+        }
+    }
+    for (auto& it: hyperedges) {
+        std::vector<Avoid::ConnRef*> connections = it.second;
+        if (connections.size() > 1) {
+            Avoid::ConnEndList hyperedgeTerminals {connections[0]->endpointConnEnds().first};
+            for (auto& conn : connections) {
+                hyperedgeTerminals.push_back(conn->endpointConnEnds().second);
+            }
+            hyperedgeRerouter->registerHyperedgeForRerouting(hyperedgeTerminals);
+        }
+    }
 }
 
 void writeLayout(ostream& out, vector<Avoid::ConnRef*> cons) {

@@ -62,13 +62,14 @@
 /*
  * Routing Options
  */
-#define NUDGE_ORTHOGONAL_SEGMENTS			"nudgeOrthogonalSegmentsConnectedToShapes"
-#define IMPROVE_HYPEREDGES					"improveHyperedgeRoutesMovingJunctions"
-#define PENALISE_ORTH_SHATE_PATHS			"penaliseOrthogonalSharedPathsAtConnEnds"
-#define NUDGE_ORTHOGONAL_COLINEAR_SEGMENTS	"nudgeOrthogonalTouchingColinearSegments"
-#define NUDGE_PREPROCESSING					"performUnifyingNudgingPreprocessingStep"
-#define IMPROVE_HYPEREDGES_ADD_DELETE       "improveHyperedgeRoutesMovingAddingAndDeletingJunctions"
-#define NUDGE_SHARED_PATHS_COMMON_ENDPOINT  "nudgeSharedPathsWithCommonEndPoint"
+#define NUDGE_ORTHOGONAL_SEGMENTS			    "nudgeOrthogonalSegmentsConnectedToShapes"
+#define IMPROVE_HYPEREDGES					    "improveHyperedgeRoutesMovingJunctions"
+#define PENALISE_ORTH_SHATE_PATHS			    "penaliseOrthogonalSharedPathsAtConnEnds"
+#define NUDGE_ORTHOGONAL_COLINEAR_SEGMENTS	    "nudgeOrthogonalTouchingColinearSegments"
+#define NUDGE_PREPROCESSING					    "performUnifyingNudgingPreprocessingStep"
+#define IMPROVE_HYPEREDGES_ADD_DELETE           "improveHyperedgeRoutesMovingAddingAndDeletingJunctions"
+#define NUDGE_SHARED_PATHS_COMMON_ENDPOINT      "nudgeSharedPathsWithCommonEndPoint"
+#define ENABLE_HYPEREDGE_FROM_COMMON_SOURCE     "enableHyperedgeFromCommonSource"
 
 /*
  * Port Sides 
@@ -101,12 +102,16 @@ void setOption(std::string optionId, std::string token, Avoid::Router* router);
 void addNode(std::vector<std::string> &tokens, std::vector<Avoid::ShapeRef*> &shapes,
         Avoid::Router* router, std::string direction);
 
+void addCluster(std::vector<std::string> &tokens, Avoid::Router* router);
+
 void addPort(std::vector<std::string> &tokens, std::vector<Avoid::ShapeConnectionPin*> &pins,
         std::vector<Avoid::ShapeRef*> &shapes, Avoid::Router* router);
 
 void addEdge(std::vector<std::string> &tokens, Avoid::ConnType connectorType,
         std::vector<Avoid::ShapeRef*> &shapes, std::vector<Avoid::ConnRef*> &cons,
         Avoid::Router* router, std::string direction);
+
+void createHyperedges(std::vector<Avoid::ConnRef*> &cons, Avoid::Router* router);
 
 /**
  * Writing the graph to the output stream
