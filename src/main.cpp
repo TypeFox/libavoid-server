@@ -138,7 +138,7 @@ void HandleRequest(chunk_istream& stream, ostream& out) {
             } else if (optionId == DIRECTION) {
                 // layout direction
                 direction = tokens[2];
-            } else if (optionId == ENABLE_HYPEREDGE_FROM_COMMON_SOURCE) {
+            } else if (optionId == ENABLE_HYPEREDGES_FROM_COMMON_SOURCE) {
                 hyperedges = true;
             } else {
                 cerr << "ERROR: unknown option " << tokens[1] << "." << endl;

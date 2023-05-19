@@ -69,7 +69,7 @@
 #define NUDGE_PREPROCESSING					    "performUnifyingNudgingPreprocessingStep"
 #define IMPROVE_HYPEREDGES_ADD_DELETE           "improveHyperedgeRoutesMovingAddingAndDeletingJunctions"
 #define NUDGE_SHARED_PATHS_COMMON_ENDPOINT      "nudgeSharedPathsWithCommonEndPoint"
-#define ENABLE_HYPEREDGE_FROM_COMMON_SOURCE     "enableHyperedgeFromCommonSource"
+#define ENABLE_HYPEREDGES_FROM_COMMON_SOURCE     "enableHyperedgesFromCommonSource"
 
 /*
  * Port Sides 
