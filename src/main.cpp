@@ -76,6 +76,8 @@ void HandleRequest(chunk_istream& stream, ostream& out) {
 	bool debug = false;
     // has the graph declaration started?
     bool graphDecl = false;
+    // have hyperedges been enabled? will result in decreased performance
+    bool hyperedges = false;
 
     // read graph from stdin
     for (std::string line; std::getline(std::cin, line);) {
@@ -136,6 +138,8 @@ void HandleRequest(chunk_istream& stream, ostream& out) {
             } else if (optionId == DIRECTION) {
                 // layout direction
                 direction = tokens[2];
+            } else if (optionId == ENABLE_HYPEREDGES_FROM_COMMON_SOURCE) {
+                hyperedges = true;
             } else {
                 cerr << "ERROR: unknown option " << tokens[1] << "." << endl;
             }
@@ -155,6 +159,22 @@ void HandleRequest(chunk_istream& stream, ostream& out) {
             }
 
             addNode(tokens, shapes, router, direction);
+
+        } else if (tokens[0] == "CLUSTER") {
+            if (router == NULL) {
+                router = new Avoid::Router(Avoid::OrthogonalRouting);
+            }
+            if (!graphDecl) {
+                cerr << "ERROR: missing declaration of GRAPH" << endl;
+                graphDecl = true;
+            }
+            // format:
+            // id topleft bottomright
+            if (tokens.size() != 6) {
+                cerr << "ERROR: invalid cluster format" << endl;
+            }
+
+            addCluster(tokens, router);
 
         } else if (tokens[0] == "PORT") {
             if (router == NULL) {
@@ -220,6 +240,9 @@ void HandleRequest(chunk_istream& stream, ostream& out) {
 
     // perform edge routing
     router->processTransaction();
+    if (hyperedges) {
+        createHyperedges(cons, router);
+    }
 
 #ifdef DEBUG_EXEC_TIME
     QueryPerformanceCounter(&t2);

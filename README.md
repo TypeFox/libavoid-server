@@ -40,6 +40,12 @@ where `{id}` is the identifier of the routing option and `{value}` is a Boolean 
 
 Their meaning is documented in the [libavoid documentation](https://www.adaptagrams.org/documentation/namespaceAvoid.html#abc707ccbd6a0a7c29c124162c864ca05).
 
+An additional option that is not part of libavoid:
+
+* `enableHyperedgesFromCommonSource`
+
+This option creates hyperedges for all edges that share a common source. This is a post-process step and therefore adds additional computation time to the original layout run.
+
 ### Routing Penalties
 
 A [routing penalty](https://www.adaptagrams.org/documentation/classAvoid_1_1Router.html#acbda0590ff3234faad409e2f39e1c9ec) is applied using a line with the format
@@ -114,6 +120,22 @@ with the following placeholders:
  * `{target node id}` &ndash; identifier of the target node (or the node containing the target port)
  * `{source port id}` &ndash; identifier of the source port (ignored if there is none)
  * `{target port id}` &ndash; identifier of the target port (ignored if there is none)
+
+### Clusters
+
+Between the two lines delimiting the graph, a cluster is added using a line with the format
+```
+CLUSTER {id} {x1} {y1} {x2} {y2}
+```
+with the following placeholders:
+
+ * `{id}` &ndash; numeric (integer) identifier of the cluster
+ * `{x1}` &ndash; horizontal position of the top left corner
+ * `{y1}` &ndash; vertical position of the top left corner
+ * `{x2}` &ndash; horizontal position of the bottom right corner
+ * `{y2}` &ndash; vertical position of the bottom right corner
+
+A cluster only allows edges to cross its borders if they have a source- or endpoint inside the cluster.
 
 ## Output Format
 
