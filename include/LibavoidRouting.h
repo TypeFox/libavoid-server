@@ -102,7 +102,7 @@ void setOption(std::string optionId, std::string token, Avoid::Router* router);
 void addNode(std::vector<std::string> &tokens, std::vector<Avoid::ShapeRef*> &shapes,
         Avoid::Router* router, std::string direction);
 
-void addCluster(std::vector<std::string> &tokens, Avoid::Router* router);
+void addCluster(std::vector<std::string> &tokens, std::vector<Avoid::ShapeRef*> &shapes, Avoid::Router* router);
 
 void addPort(std::vector<std::string> &tokens, std::vector<Avoid::ShapeConnectionPin*> &pins,
         std::vector<Avoid::ShapeRef*> &shapes, Avoid::Router* router);

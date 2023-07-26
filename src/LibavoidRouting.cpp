@@ -201,7 +201,7 @@ void addNode(vector<string> &tokens, vector<Avoid::ShapeRef*> &shapes, Avoid::Ro
     }
 }
 
-void addCluster(vector<string> &tokens, Avoid::Router* router) {
+void addCluster(vector<string> &tokens, vector<Avoid::ShapeRef*> &shapes, Avoid::Router* router) {
     int id = toInt(tokens.at(1));
     double topLeftX = toDouble(tokens.at(2));
     double topLeftY = toDouble(tokens.at(3));
@@ -214,6 +214,8 @@ void addCluster(vector<string> &tokens, Avoid::Router* router) {
     clusterPoly.ps[2] = Avoid::Point(topLeftX, topLeftY);          // top left
     clusterPoly.ps[3] = Avoid::Point(topLeftX, bottomRightY);      // bottom left
     new Avoid::ClusterRef(router, clusterPoly, id);
+
+    shapes.push_back(nullptr); // insert null to avoid out of bounds errors on normal node access
 }
 
 void addPort(vector<string> &tokens, vector<Avoid::ShapeConnectionPin*> &pins,

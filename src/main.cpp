@@ -174,7 +174,7 @@ void HandleRequest(chunk_istream& stream, ostream& out) {
                 cerr << "ERROR: invalid cluster format" << endl;
             }
 
-            addCluster(tokens, router);
+            addCluster(tokens, shapes, router);
 
         } else if (tokens[0] == "PORT") {
             if (router == NULL) {
