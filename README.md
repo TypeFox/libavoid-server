@@ -23,6 +23,12 @@ where `{id}` is the identifier of the layout option and `{value}` is a value for
 
 _Note:_ The `edgeRouting` option must be applied before all other configuration parameters.
 
+An additional option that is not part of libavoid:
+
+* `enableHyperedgesFromCommonSource`
+
+This option creates hyperedges for all edges that share a common source. This is a post-process step and therefore adds additional computation time to the original layout run.
+
 ### Routing Options
 
 A [routing option](https://www.adaptagrams.org/documentation/classAvoid_1_1Router.html#a09f057f6d101f010588c9022893c9ac1) is applied using a line with the format
@@ -39,12 +45,6 @@ where `{id}` is the identifier of the routing option and `{value}` is a Boolean 
  * `improveHyperedgeRoutesMovingAddingAndDeletingJunctions`
 
 Their meaning is documented in the [libavoid documentation](https://www.adaptagrams.org/documentation/namespaceAvoid.html#abc707ccbd6a0a7c29c124162c864ca05).
-
-An additional option that is not part of libavoid:
-
-* `enableHyperedgesFromCommonSource`
-
-This option creates hyperedges for all edges that share a common source. This is a post-process step and therefore adds additional computation time to the original layout run.
 
 ### Routing Penalties
 

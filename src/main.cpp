@@ -139,7 +139,7 @@ void HandleRequest(chunk_istream& stream, ostream& out) {
                 // layout direction
                 direction = tokens[2];
             } else if (optionId == ENABLE_HYPEREDGES_FROM_COMMON_SOURCE) {
-                hyperedges = true;
+                hyperedges = toBool(tokens[2]);
             } else {
                 cerr << "ERROR: unknown option " << tokens[1] << "." << endl;
             }
@@ -174,7 +174,7 @@ void HandleRequest(chunk_istream& stream, ostream& out) {
                 cerr << "ERROR: invalid cluster format" << endl;
             }
 
-            addCluster(tokens, router);
+            addCluster(tokens, shapes, router);
 
         } else if (tokens[0] == "PORT") {
             if (router == NULL) {
